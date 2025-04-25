@@ -52,7 +52,6 @@ def generate_tutorial():
         return jsonify({"error": "Missing required fields: gemini_key, repo_url"}), 400
 
     repo_name = get_repo_name_from_url(repo_url)
-    output_path = os.path.join(OUTPUT_DIR, repo_name)
 
     # Construct the command
     # SECURITY WARNING: Directly passing API keys like this is risky.
@@ -60,28 +59,25 @@ def generate_tutorial():
     command = [
         'python',
         os.path.join(PROJECT_ROOT, 'main.py'),
-        '--repo_url', repo_url,
-        # Add other arguments based on main.py's expected flags
-        # Example: Assuming main.py takes include/exclude patterns
-        '--include', include_patterns,
-        '--exclude', exclude_patterns,
-        '--output_path', output_path # Pass the specific output path
-        # Add API keys - WARNING: Security risk
-        # Consider how main.py consumes these. If via env vars:
-        # os.environ['GEMINI_API_KEY'] = gemini_key
-        # if github_token: os.environ['GITHUB_TOKEN'] = github_token
-        # If via args (less secure):
-        # '--gemini_key', gemini_key,
+        '--repo', repo_url
     ]
-    # Append github_token if provided and if main.py accepts it as an arg
-    # if github_token:
-    #     command.extend(['--github_token', github_token])
-
+    
+    # Add include patterns if provided
+    if include_patterns:
+        command.extend(['--include'] + include_patterns.split(','))
+    
+    # Add exclude patterns if provided
+    if exclude_patterns:
+        command.extend(['--exclude'] + exclude_patterns.split(','))
+    
     # For simplicity, let's assume main.py reads keys from environment
     env = os.environ.copy()
-    env['GEMINI_API_KEY'] = gemini_key
+    if gemini_key:
+        env['GEMINI_API_KEY'] = gemini_key
     if github_token:
         env['GITHUB_TOKEN'] = github_token
+        
+    print(f"Setting environment variables: GEMINI_API_KEY={gemini_key[:5]}... GITHUB_TOKEN={github_token[:5] if github_token else None}...")
 
     print(f"Running command: {' '.join(command)}")
     try:
