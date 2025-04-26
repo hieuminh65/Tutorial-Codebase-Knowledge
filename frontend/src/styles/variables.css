@@ -1,0 +1,31 @@
+/* CSS Variables */
+:root {
+  --primary-color: #4a6baf;
+  --primary-dark: #3a5795;
+  --primary-light: #6a86c4;
+  --secondary-color: #5d3a97;
+  --accent-color: #f7b733;
+  --light-bg: #f8fafc;
+  --dark-text: #2d3748;
+  --medium-text: #4a5568;
+  --light-text: #718096;
+  --border-color: #e2e8f0;
+  --success-color: #38a169;
+  --error-color: #e53e3e;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+  --button-bg: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  --header-bg: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+}

@@ -9,14 +9,13 @@ from flask_cors import CORS
 app = Flask(__name__)
 
 # --- CORS Configuration ---
-# Explicitly allow the Cloud Workstation frontend origin and common local origins
-frontend_origin_cloud = "https://5173-idx-tutorial-codebase-knowledge-1745606939195.cluster-2xid2zxbenc4ixa74rpk7q7fyk.cloudworkstations.dev"
+# Allow local development origin
 frontend_origin_local = "http://localhost:5173" # Common Vite default
 frontend_origin_local_cra = "http://localhost:3000" # Common Create React App default
 
 CORS(app, resources={
     r"/api/*": {
-        "origins": [frontend_origin_cloud, frontend_origin_local, frontend_origin_local_cra]
+        "origins": [frontend_origin_local, frontend_origin_local_cra]
     }
 })
 # -------------------------
