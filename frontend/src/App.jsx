@@ -294,34 +294,53 @@ function InputForm() {
                         <>
                             <div className="form-group">
                                 <label htmlFor="maxFileSize">Maximum File Size (KB)</label>
-                                <div className="number-input-container">
-                                    <button
-                                        type="button"
-                                        className="number-input-button"
-                                        onClick={() => handleMaxFileSizeChange(Math.max(1, maxFileSize - 10))}
-                                        aria-label="Decrease file size"
-                                    >
-                                        −
-                                    </button>
-                                    <input
-                                        type="number"
-                                        id="maxFileSize"
-                                        min="1"
-                                        max="10000"
-                                        value={maxFileSize}
-                                        onChange={(e) => handleMaxFileSizeChange(parseInt(e.target.value) || 100)}
-                                        className="number-input"
-                                        aria-label="Maximum file size in kilobytes"
-                                    />
-                                    <button
-                                        type="button"
-                                        className="number-input-button"
-                                        onClick={() => handleMaxFileSizeChange(Math.min(10000, maxFileSize + 10))}
-                                        aria-label="Increase file size"
-                                    >
-                                        +
-                                    </button>
-                                    <span className="size-unit">KB</span>
+                                <div className="size-input-container">
+                                    <div className="number-input-container">
+                                        <button
+                                            type="button"
+                                            className="number-input-button"
+                                            onClick={() => handleMaxFileSizeChange(Math.max(1, maxFileSize - 10))}
+                                            aria-label="Decrease file size"
+                                        >
+                                            <span className="button-icon">−</span>
+                                        </button>
+                                        <input
+                                            type="number"
+                                            id="maxFileSize"
+                                            min="1"
+                                            max="10000"
+                                            value={maxFileSize}
+                                            onChange={(e) => handleMaxFileSizeChange(parseInt(e.target.value) || 100)}
+                                            className="number-input"
+                                            aria-label="Maximum file size in kilobytes"
+                                        />
+                                        <button
+                                            type="button"
+                                            className="number-input-button"
+                                            onClick={() => handleMaxFileSizeChange(Math.min(10000, maxFileSize + 10))}
+                                            aria-label="Increase file size"
+                                        >
+                                            <span className="button-icon">+</span>
+                                        </button>
+                                    </div>
+
+                                    <div className="file-size-slider-container">
+                                        <input
+                                            type="range"
+                                            min="1"
+                                            max="1000"
+                                            step="10"
+                                            value={maxFileSize}
+                                            onChange={(e) => handleMaxFileSizeChange(parseInt(e.target.value))}
+                                            className="file-size-slider"
+                                            aria-label="Adjust maximum file size using slider"
+                                        />
+                                        <div className="slider-labels">
+                                            <span>1KB</span>
+                                            <span>500KB</span>
+                                            <span>1000KB</span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <small className="form-hint">Files larger than this will be skipped (default: 100KB)</small>
                             </div>
