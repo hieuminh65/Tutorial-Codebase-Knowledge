@@ -49,25 +49,38 @@
 }
 
 .secondary-button {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--primary-light);
   color: var(--primary-dark);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(5px);
+  border: 1px solid rgba(74, 107, 175, 0.3);
+  border-radius: 8px;
   padding: 12px 20px;
   min-width: 120px;
   box-shadow: var(--shadow-sm);
   font-weight: 600;
+  transition: all 0.2s;
+  cursor: pointer;
 }
 
 .secondary-button:hover {
-  background-color: #ffffff;
-  color: var(--primary-color);
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.secondary-button:active {
+  transform: translateY(1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .secondary-button:disabled {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(74, 107, 175, 0.1);
   color: rgba(74, 107, 175, 0.5);
+  border-color: rgba(74, 107, 175, 0.2);
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 /* Pattern selection styling with improved visuals */
