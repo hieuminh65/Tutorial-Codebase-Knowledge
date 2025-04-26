@@ -38,7 +38,29 @@ function InputForm() {
     const [patternStatus, setPatternStatus] = useState({}); // Map of pattern -> 'include' or 'exclude'
     const [fileCount, setFileCount] = useState(0);
     const [generatedTutorialLink, setGeneratedTutorialLink] = useState(null);
+    const [starCount, setStarCount] = useState(null);
     const navigate = useNavigate();
+
+    // Fetch GitHub repository stars when component mounts
+    useEffect(() => {
+        const fetchRepoStats = async () => {
+            try {
+                // Use the main repository URL
+                const repoUrl = "https://github.com/The-Pocket/Tutorial-Codebase-Knowledge";
+                const [, , , owner, repo] = repoUrl.split('/');
+
+                const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}`);
+                if (response.status === 200) {
+                    setStarCount(response.data.stargazers_count);
+                }
+            } catch (err) {
+                console.error("Failed to fetch repository stats:", err);
+                // Silently fail - stars display is not critical functionality
+            }
+        };
+
+        fetchRepoStats();
+    }, []);
 
     // Function to update max file size and filter patterns
     const handleMaxFileSizeChange = (newSize) => {
@@ -194,184 +216,209 @@ function InputForm() {
 
     return (
         <div className="container">
-            <h1>Generate Tutorial from Codebase</h1>
-            <form onSubmit={(e) => {
-                e.preventDefault();
-                if (patternSuggestions.length > 0) {
-                    handleSubmit(e);
-                } else {
-                    fetchPatterns();
-                }
-            }}>
-                <div className="form-group">
-                    <label htmlFor="geminiKey">Gemini API Key *</label>
-                    <input
-                        type="password"
-                        id="geminiKey"
-                        value={geminiKey}
-                        onChange={(e) => setGeminiKey(e.target.value)}
-                        required
-                        autoComplete="new-password"
-                    />
+            <div className="app-header-wrapper">
+                <div className="app-header">
+                    <div className="app-header-title">
+                        <h1>Tutorial-Codebase-Knowledge</h1>
+                        <div className="app-header-subtitle">Convert your codebase into comprehensive tutorials</div>
+                    </div>
+                    {starCount !== null && (
+                        <a
+                            href="https://github.com/The-Pocket/Tutorial-Codebase-Knowledge"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="github-stats"
+                        >
+                            <svg className="github-icon" width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+                                <path fillRule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                            </svg>
+                            <span className="github-star-count">{starCount}</span>
+                        </a>
+                    )}
                 </div>
-                <div className="form-group">
-                    <label htmlFor="githubToken">GitHub Token (Optional, for private repos)</label>
-                    <input
-                        type="password"
-                        id="githubToken"
-                        value={githubToken}
-                        onChange={(e) => setGithubToken(e.target.value)}
-                        autoComplete="new-password"
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="repoUrl">GitHub Repo URL *</label>
-                    <div className="url-input-group">
+            </div>
+            <div className="form-container">
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    if (patternSuggestions.length > 0) {
+                        handleSubmit(e);
+                    } else {
+                        fetchPatterns();
+                    }
+                }}>
+                    <div className="form-group">
+                        <label htmlFor="geminiKey">Gemini API Key *</label>
                         <input
-                            type="url"
-                            id="repoUrl"
-                            value={repoUrl}
-                            onChange={(e) => setRepoUrl(e.target.value)}
-                            placeholder="https://github.com/user/repo"
+                            type="password"
+                            id="geminiKey"
+                            value={geminiKey}
+                            onChange={(e) => setGeminiKey(e.target.value)}
                             required
+                            autoComplete="new-password"
                         />
-                        {!patternSuggestions.length && (
-                            <button
-                                type="submit"
-                                disabled={isFetchingPatterns || !repoUrl}
-                                className="secondary-button"
-                            >
-                                {isFetchingPatterns ? 'Fetching...' : 'Submit'}
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="githubToken">GitHub Token (Optional, for private repos)</label>
+                        <input
+                            type="password"
+                            id="githubToken"
+                            value={githubToken}
+                            onChange={(e) => setGithubToken(e.target.value)}
+                            autoComplete="new-password"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="repoUrl">GitHub Repo URL *</label>
+                        <div className="url-input-group">
+                            <input
+                                type="url"
+                                id="repoUrl"
+                                value={repoUrl}
+                                onChange={(e) => setRepoUrl(e.target.value)}
+                                placeholder="https://github.com/user/repo"
+                                required
+                            />
+                            {!patternSuggestions.length && (
+                                <button
+                                    type="submit"
+                                    disabled={isFetchingPatterns || !repoUrl}
+                                    className="secondary-button"
+                                >
+                                    {isFetchingPatterns ? 'Fetching...' : 'Submit'}
+                                </button>
+                            )}
+                        </div>
+                    </div>
+
+                    {patternSuggestions.length > 0 && (
+                        <>
+                            <div className="form-group">
+                                <label htmlFor="maxFileSize">Maximum File Size (KB)</label>
+                                <div className="number-input-container">
+                                    <button
+                                        type="button"
+                                        className="number-input-button"
+                                        onClick={() => handleMaxFileSizeChange(Math.max(1, maxFileSize - 10))}
+                                        aria-label="Decrease file size"
+                                    >
+                                        −
+                                    </button>
+                                    <input
+                                        type="number"
+                                        id="maxFileSize"
+                                        min="1"
+                                        max="10000"
+                                        value={maxFileSize}
+                                        onChange={(e) => handleMaxFileSizeChange(parseInt(e.target.value) || 100)}
+                                        className="number-input"
+                                        aria-label="Maximum file size in kilobytes"
+                                    />
+                                    <button
+                                        type="button"
+                                        className="number-input-button"
+                                        onClick={() => handleMaxFileSizeChange(Math.min(10000, maxFileSize + 10))}
+                                        aria-label="Increase file size"
+                                    >
+                                        +
+                                    </button>
+                                    <span className="size-unit">KB</span>
+                                </div>
+                                <small className="form-hint">Files larger than this will be skipped (default: 100KB)</small>
+                            </div>
+                        </>
+                    )}
+
+                    {patternError && <div className="error" style={{ marginBottom: '15px' }}>{patternError}</div>}
+
+                    {patternSuggestions.length > 0 && (
+                        <div className="patterns-container">
+                            <div className="patterns-header">
+                                <h3>File Patterns ({fileCount} files found)</h3>
+                                <p className="patterns-explanation">
+                                    <strong>What are patterns?</strong> Patterns are filters like "*.py" (all Python files) or "src/**" (all files in src folder).
+                                    <br />
+                                    <strong>Include:</strong> Files that will be analyzed for the tutorial.
+                                    <br />
+                                    <strong>Exclude:</strong> Files that will be skipped.
+                                    <br />
+                                    Click on any pattern to move it between the Include and Exclude columns.
+                                </p>
+                            </div>
+
+                            <div className="patterns-columns">
+                                <div className="patterns-column">
+                                    <h4>Include ({includedPatterns.length} patterns, {includedFilesCount} total files)</h4>
+                                    <div className="patterns-list">
+                                        {includedPatterns.map((pattern, index) => (
+                                            <div
+                                                key={`include-${index}`}
+                                                className="pattern-item pattern-item-movable"
+                                                onClick={() => movePattern(pattern.pattern)}
+                                            >
+                                                <div className="pattern-content">
+                                                    <span className="pattern-icon">→</span>
+                                                    <span className="pattern-label">{pattern.label}</span>
+                                                    <span className="pattern-count">
+                                                        ({pattern.count} files, {pattern.formatted_size})
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {includedPatterns.length === 0 && (
+                                            <div className="pattern-empty">No patterns included</div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="patterns-column">
+                                    <h4>Exclude ({excludedPatterns.length} patterns, {excludedFilesCount} total files)</h4>
+                                    <div className="patterns-list">
+                                        {excludedPatterns.map((pattern, index) => (
+                                            <div
+                                                key={`exclude-${index}`}
+                                                className="pattern-item pattern-item-movable"
+                                                onClick={() => movePattern(pattern.pattern)}
+                                            >
+                                                <div className="pattern-content">
+                                                    <span className="pattern-icon">←</span>
+                                                    <span className="pattern-label">{pattern.label}</span>
+                                                    <span className="pattern-count">
+                                                        ({pattern.count} files, {pattern.formatted_size})
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {excludedPatterns.length === 0 && (
+                                            <div className="pattern-empty">No patterns excluded</div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" disabled={isLoading} className="generate-button">
+                                {isLoading ? 'Generating...' : 'Generate Tutorial'}
                             </button>
-                        )}
-                    </div>
-                </div>
+                        </div>
+                    )}
 
-                {patternSuggestions.length > 0 && (
-                    <>
-                        <div className="form-group">
-                            <label htmlFor="maxFileSize">Maximum File Size (KB)</label>
-                            <div className="number-input-container">
-                                <button
-                                    type="button"
-                                    className="number-input-button"
-                                    onClick={() => handleMaxFileSizeChange(Math.max(1, maxFileSize - 10))}
+                    {generatedTutorialLink && (
+                        <div className="success-message">
+                            <p>Tutorial generated successfully!</p>
+                            <div className="tutorial-link-container">
+                                <a
+                                    href={generatedTutorialLink}
+                                    className="tutorial-link"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                 >
-                                    −
-                                </button>
-                                <input
-                                    type="number"
-                                    id="maxFileSize"
-                                    min="1"
-                                    max="10000"
-                                    value={maxFileSize}
-                                    onChange={(e) => handleMaxFileSizeChange(parseInt(e.target.value) || 100)}
-                                    className="number-input"
-                                />
-                                <button
-                                    type="button"
-                                    className="number-input-button"
-                                    onClick={() => handleMaxFileSizeChange(Math.min(10000, maxFileSize + 10))}
-                                >
-                                    +
-                                </button>
-                                <span className="size-unit">KB</span>
-                            </div>
-                            <small className="form-hint">Files larger than this will be skipped (default: 100KB)</small>
-                        </div>
-                    </>
-                )}
-
-                {patternError && <div className="error" style={{ marginBottom: '15px' }}>{patternError}</div>}
-
-                {patternSuggestions.length > 0 && (
-                    <div className="patterns-container">
-                        <div className="patterns-header">
-                            <h3>File Patterns ({fileCount} files found)</h3>
-                            <p className="patterns-explanation">
-                                <strong>What are patterns?</strong> Patterns are filters like "*.py" (all Python files) or "src/**" (all files in src folder).
-                                <br />
-                                <strong>Include:</strong> Files that will be analyzed for the tutorial.
-                                <br />
-                                <strong>Exclude:</strong> Files that will be skipped.
-                                <br />
-                                Click on any pattern to move it between the Include and Exclude columns.
-                            </p>
-                        </div>
-
-                        <div className="patterns-columns">
-                            <div className="patterns-column">
-                                <h4>Include ({includedPatterns.length} patterns, {includedFilesCount} total files)</h4>
-                                <div className="patterns-list">
-                                    {includedPatterns.map((pattern, index) => (
-                                        <div
-                                            key={`include-${index}`}
-                                            className="pattern-item pattern-item-movable"
-                                            onClick={() => movePattern(pattern.pattern)}
-                                        >
-                                            <div className="pattern-content">
-                                                <span className="pattern-icon">→</span>
-                                                <span className="pattern-label">{pattern.label}</span>
-                                                <span className="pattern-count">
-                                                    ({pattern.count} files, {pattern.formatted_size})
-                                                </span>
-                                            </div>
-                                        </div>
-                                    ))}
-                                    {includedPatterns.length === 0 && (
-                                        <div className="pattern-empty">No patterns included</div>
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className="patterns-column">
-                                <h4>Exclude ({excludedPatterns.length} patterns, {excludedFilesCount} total files)</h4>
-                                <div className="patterns-list">
-                                    {excludedPatterns.map((pattern, index) => (
-                                        <div
-                                            key={`exclude-${index}`}
-                                            className="pattern-item pattern-item-movable"
-                                            onClick={() => movePattern(pattern.pattern)}
-                                        >
-                                            <div className="pattern-content">
-                                                <span className="pattern-icon">←</span>
-                                                <span className="pattern-label">{pattern.label}</span>
-                                                <span className="pattern-count">
-                                                    ({pattern.count} files, {pattern.formatted_size})
-                                                </span>
-                                            </div>
-                                        </div>
-                                    ))}
-                                    {excludedPatterns.length === 0 && (
-                                        <div className="pattern-empty">No patterns excluded</div>
-                                    )}
-                                </div>
+                                    Click here to view your tutorial
+                                </a>
                             </div>
                         </div>
-
-                        <button type="submit" disabled={isLoading} className="generate-button">
-                            {isLoading ? 'Generating...' : 'Generate Tutorial'}
-                        </button>
-                    </div>
-                )}
-
-                {generatedTutorialLink && (
-                    <div className="success-message">
-                        <p>Tutorial generated successfully!</p>
-                        <div className="tutorial-link-container">
-                            <a
-                                href={generatedTutorialLink}
-                                className="tutorial-link"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Click here to view your tutorial
-                            </a>
-                        </div>
-                    </div>
-                )}
-            </form>
-            {error && <div className="error" style={{ marginTop: '15px' }}>{error}</div>}
+                    )}
+                </form>
+                {error && <div className="error" style={{ marginTop: '15px' }}>{error}</div>}
+            </div>
         </div>
     );
 }
