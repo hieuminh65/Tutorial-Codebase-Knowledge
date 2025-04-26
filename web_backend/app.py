@@ -135,6 +135,19 @@ def get_output_structure(repo_name):
              # Fallback: Look for index.md and maybe other top-level md files
              index_md = os.path.join(repo_output_path, 'index.md')
              other_md_files = glob.glob(os.path.join(repo_output_path, '*.md'))
+             
+             # Sort the markdown files - ensure numerical prefixes (01_, 02_, etc.) are sorted correctly
+             def sort_key(filename):
+                 basename = os.path.basename(filename)
+                 # Extract the numerical prefix if present (e.g., "01_" from "01_introduction.md")
+                 prefix = basename.split('_')[0] if '_' in basename else ''
+                 if prefix.isdigit():
+                     return int(prefix)  # Sort numerically if it's a number
+                 return float('inf')  # Put non-numbered files last
+             
+             # Sort the files using our custom sort key
+             other_md_files = sorted(other_md_files, key=sort_key)
+             
              lessons = []
              if os.path.exists(index_md):
                   lessons.append({"title": "Overview", "path": "index.md"})
@@ -160,11 +173,8 @@ def get_output_structure(repo_name):
                 chapter_title = chapter_name.replace('_', ' ').title() # e.g., "Chapter 1"
 
                 lessons = []
-                # Sort lessons numerically if possible
-                lesson_files = sorted(
-                    glob.glob(os.path.join(chapter_dir, '*.md')),
-                     key=lambda x: int(os.path.splitext(os.path.basename(x))[0].split('_')[-1]) if os.path.splitext(os.path.basename(x))[0].split('_')[-1].isdigit() else float('inf')
-                )
+                # Simply sort the files alphabetically by filename
+                lesson_files = sorted(glob.glob(os.path.join(chapter_dir, '*.md')))
 
                 for lesson_file in lesson_files:
                     lesson_basename = os.path.basename(lesson_file)
