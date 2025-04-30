@@ -2,11 +2,64 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
+import mermaid from 'mermaid';
 import { API_BASE_URL } from '../../utils/apiConfig';
 import AppHeader from '../common/AppHeader';
 import SkeletonLoader from '../common/SkeletonLoader';
 import SidebarSkeletonLoader from '../common/SidebarSkeletonLoader';
 import './OutputDisplay.css';
+
+// Initialize mermaid
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'dark',
+  securityLevel: 'loose',
+  fontSize: 16,
+  fontFamily: '"Fira Code", monospace',
+});
+
+// Custom component for Mermaid diagrams
+const MermaidDiagram = ({ content }) => {
+  const ref = useRef(null);
+  const [svg, setSvg] = useState('');
+  const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    if (ref.current) {
+      const renderDiagram = async () => {
+        try {
+          // Generate a unique ID for this diagram
+          const id = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
+          // Render the diagram
+          const { svg } = await mermaid.render(id, content);
+          setSvg(svg);
+        } catch (error) {
+          console.error('Failed to render Mermaid diagram:', error);
+          // Set error message
+          setSvg(`<pre style="color:#f38ba8">Mermaid diagram error: ${error.message}</pre>`);
+        }
+      };
+
+      renderDiagram();
+    }
+  }, [content, key]);
+
+  // This useEffect will re-render diagrams on window resize
+  useEffect(() => {
+    const handleResize = () => setKey(prev => prev + 1);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className="mermaid-diagram"
+      dangerouslySetInnerHTML={{ __html: svg }}
+    />
+  );
+};
 
 function OutputDisplay() {
   const { repoName, lessonPath } = useParams();
@@ -93,7 +146,6 @@ function OutputDisplay() {
       <AppHeader />
       <div className="container output-container">
         <aside className="sidebar">
-          <h3>{repoName} Tutorial</h3>
           {isLoadingStructure && <SidebarSkeletonLoader />}
           {!isLoadingStructure && error && !selectedContent && (
             <div className="generating-message">
@@ -140,7 +192,24 @@ function OutputDisplay() {
             {/* Show previous content during fadeOut for a smooth transition */}
             {contentTransitionState === 'fadeOut' && previousContentRef.current && (
               <div className="markdown-content">
-                <ReactMarkdown>{previousContentRef.current}</ReactMarkdown>
+                <ReactMarkdown
+                  rehypePlugins={[rehypeRaw]}
+                  components={{
+                    code({ node, inline, className, children, ...props }) {
+                      const match = /language-(\w+)/.exec(className || '');
+                      if (!inline && match && match[1] === 'mermaid') {
+                        return <MermaidDiagram content={String(children).replace(/\n$/, '')} />;
+                      }
+                      return (
+                        <code className={className} {...props}>
+                          {children}
+                        </code>
+                      );
+                    }
+                  }}
+                >
+                  {previousContentRef.current}
+                </ReactMarkdown>
               </div>
             )}
 
@@ -148,7 +217,24 @@ function OutputDisplay() {
             {(contentTransitionState === 'fadeIn' || contentTransitionState === 'idle') &&
               !isLoadingContent && selectedContent && (
                 <div className="markdown-content">
-                  <ReactMarkdown>{selectedContent}</ReactMarkdown>
+                  <ReactMarkdown
+                    rehypePlugins={[rehypeRaw]}
+                    components={{
+                      code({ node, inline, className, children, ...props }) {
+                        const match = /language-(\w+)/.exec(className || '');
+                        if (!inline && match && match[1] === 'mermaid') {
+                          return <MermaidDiagram content={String(children).replace(/\n$/, '')} />;
+                        }
+                        return (
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        );
+                      }
+                    }}
+                  >
+                    {selectedContent}
+                  </ReactMarkdown>
                 </div>
               )}
 

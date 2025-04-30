@@ -332,6 +332,67 @@
   opacity: 1;
 }
 
+/* Mermaid diagram specific styles */
+.mermaid-diagram {
+  background-color: #282a36;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 20px 0;
+  overflow-x: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.mermaid-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Style overrides for Mermaid diagram elements */
+.mermaid-diagram .actor {
+  fill: #44475a !important;
+  stroke: #bd93f9 !important;
+}
+
+.mermaid-diagram text {
+  fill: #f8f8f2 !important;
+  font-family: "Fira Code", monospace !important;
+}
+
+.mermaid-diagram .messageText {
+  fill: #f1fa8c !important;
+  stroke: none !important;
+}
+
+.mermaid-diagram .messageLine0,
+.mermaid-diagram .messageLine1 {
+  stroke: #ff79c6 !important;
+}
+
+.mermaid-diagram .labelBox {
+  fill: #44475a !important;
+  stroke: #ff79c6 !important;
+}
+
+.mermaid-diagram .labelText {
+  fill: #f8f8f2 !important;
+}
+
+.mermaid-diagram .loopText,
+.mermaid-diagram .loopLine {
+  fill: #f1fa8c !important;
+  stroke: #ff79c6 !important;
+}
+
+.mermaid-diagram .note {
+  fill: #f1fa8c !important;
+  stroke: #50fa7b !important;
+}
+
+.mermaid-diagram .noteText {
+  fill: #282a36 !important;
+  font-weight: bold;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .output-container {
@@ -348,5 +409,11 @@
 
   .content {
     padding: 20px;
+  }
+
+  .mermaid-diagram {
+    padding: 10px;
+    margin: 15px 0;
+    font-size: 12px;
   }
 }
