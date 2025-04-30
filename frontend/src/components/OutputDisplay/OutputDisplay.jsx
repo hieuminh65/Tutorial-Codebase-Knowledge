@@ -4,6 +4,8 @@ import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import { API_BASE_URL } from '../../utils/apiConfig';
 import AppHeader from '../common/AppHeader';
+import SkeletonLoader from '../common/SkeletonLoader';
+import SidebarSkeletonLoader from '../common/SidebarSkeletonLoader';
 import './OutputDisplay.css';
 
 function OutputDisplay() {
@@ -77,8 +79,14 @@ function OutputDisplay() {
       <div className="container output-container">
         <aside className="sidebar">
           <h3>{repoName} Tutorial</h3>
-          {isLoadingStructure && <p>Loading structure...</p>}
-          {!isLoadingStructure && error && !selectedContent && <p className="error">{error}</p>} {/* Show structure error only if no content loaded*/}
+          {isLoadingStructure && <SidebarSkeletonLoader />}
+          {!isLoadingStructure && error && !selectedContent && (
+            <div className="generating-message">
+              <p className="error">{error}</p>
+              <p>The tutorial for this repository is being generated, which might take a few minutes to complete.</p>
+              <p>Please check back soon or refresh the page to see the latest content.</p>
+            </div>
+          )} {/* Show structure error with generation message */}
           {!isLoadingStructure && structure && structure.chapters && (
             <ul>
               {structure.chapters.map((chapter, chapIndex) => (
@@ -109,7 +117,7 @@ function OutputDisplay() {
           )}
         </aside>
         <main className="content">
-          {isLoadingContent && <div className="loading">Loading content...</div>}
+          {isLoadingContent && <SkeletonLoader />}
           {/* Show content-specific error if content loading failed */}
           {!isLoadingContent && error && selectedPath && <div className="error">Error loading {selectedPath}: {error}</div>}
           {!isLoadingContent && selectedContent && (

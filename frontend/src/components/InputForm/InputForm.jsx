@@ -142,8 +142,8 @@ function InputForm() {
     setGeneratedTutorialLink(null);
 
     try {
-      console.log(`Sending request to: ${API_BASE_URL}/generate`);
-      const response = await axios.post(`${API_BASE_URL}/generate`, {
+      console.log(`Sending request to: ${API_BASE_URL}/start-job`);
+      const response = await axios.post(`${API_BASE_URL}/start-job`, {
         gemini_key: geminiKey,
         github_token: githubToken || null,
         repo_url: repoUrl,
@@ -152,18 +152,19 @@ function InputForm() {
         max_file_size: maxFileSize * 1024, // Convert KB to bytes
       });
 
-      if (response.status === 200 && response.data.repo_name) {
-        // Instead of navigating, set the link for the user to click
-        setGeneratedTutorialLink(`/output/${response.data.repo_name}`);
+      if ((response.status === 202 || response.status === 200)) {
+        // Job was accepted and queued for processing
+        setGeneratedTutorialLink(`/output/${repoUrl.split('/').pop()}`);
+        navigate(`/output/${repoUrl.split('/').pop()}`);
       } else {
-        setError('Generation started but failed to get repo name.');
+        setError('Job submission failed. Please try again later.');
       }
     } catch (err) {
-      console.error("Generation failed:", err);
-      const errorMsg = err.response?.data?.details || err.response?.data?.error || err.message || 'An unknown error occurred during generation.';
-      setError(`Generation Failed: ${errorMsg}`);
+      console.error("Job submission failed:", err);
+      const errorMsg = err.response?.data?.details || err.response?.data?.error || err.message || 'An unknown error occurred during submission.';
+      setError(`Job Submission Failed: ${errorMsg}`);
       if (err.message.includes('Network Error') || err.message.includes('CORS')) {
-        setError(`Generation Failed: Network or CORS error. Ensure backend is running and accessible at ${API_BASE_URL}. Check browser console for details.`);
+        setError(`Job Submission Failed: Network or CORS error. Ensure backend is running and accessible at ${API_BASE_URL}. Check browser console for details.`);
       }
     } finally {
       setIsLoading(false);
@@ -362,7 +363,8 @@ function InputForm() {
 
           {generatedTutorialLink && (
             <div className="success-message">
-              <p>Tutorial generated successfully!</p>
+              <p>Job accepted! Your tutorial is now being generated.</p>
+              <p>The tutorial will be available in a few minutes at:</p>
               <div className="tutorial-link-container">
                 <a
                   href={generatedTutorialLink}
@@ -370,7 +372,7 @@ function InputForm() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Click here to view your tutorial
+                  {window.location.origin}{generatedTutorialLink}
                 </a>
               </div>
             </div>

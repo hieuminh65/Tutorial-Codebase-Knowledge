@@ -239,6 +239,65 @@
   text-align: left; /* Ensure error messages are left-aligned */
 }
 
+.generating-message {
+  border: 1px solid #3498db;
+  background-color: rgba(52, 152, 219, 0.1);
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.generating-message p {
+  margin: 5px 0;
+}
+
+.generating-message .error {
+  color: #e74c3c;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Skeleton loading animation */
+.skeleton-loader {
+  animation: pulse 1.5s infinite ease-in-out;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.skeleton-title {
+  height: 32px;
+  width: 80%;
+  margin-bottom: 15px;
+}
+
+.skeleton-paragraph {
+  height: 16px;
+  margin-bottom: 10px;
+}
+
+.skeleton-paragraph.short {
+  width: 70%;
+}
+
+.skeleton-paragraph.medium {
+  width: 85%;
+}
+
+.skeleton-paragraph.long {
+  width: 100%;
+}
+
+@keyframes pulse {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .output-container {

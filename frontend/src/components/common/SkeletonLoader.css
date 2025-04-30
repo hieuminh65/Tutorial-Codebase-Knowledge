@@ -1,0 +1,125 @@
+/* SkeletonLoader.css */
+.skeleton-content {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.skeleton-loader {
+  animation: pulse 1.5s infinite ease-in-out;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+/* Title - mimics h1 */
+.skeleton-title {
+  height: 36px;
+  width: 85%;
+  margin-bottom: 30px;
+}
+
+/* Subtitle - mimics h2, h3 */
+.skeleton-subtitle {
+  height: 28px;
+  width: 60%;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+/* Text paragraphs with varying widths */
+.skeleton-paragraph {
+  height: 16px;
+  margin-bottom: 16px;
+}
+
+.skeleton-paragraph.short {
+  width: 60%;
+}
+
+.skeleton-paragraph.medium {
+  width: 80%;
+}
+
+.skeleton-paragraph.long {
+  width: 95%;
+}
+
+/* Code block styling */
+.skeleton-code-block {
+  background-color: #f1f1f1;
+  padding: 15px;
+  border-radius: 6px;
+  margin: 25px 0;
+}
+
+.skeleton-code-line {
+  height: 14px;
+  margin-bottom: 8px;
+}
+
+.skeleton-code-line.short {
+  width: 40%;
+}
+
+.skeleton-code-line.medium {
+  width: 70%;
+}
+
+.skeleton-code-line.long {
+  width: 90%;
+}
+
+/* List items */
+.skeleton-list {
+  padding-left: 20px;
+  margin: 20px 0;
+}
+
+.skeleton-list-item {
+  height: 16px;
+  margin-bottom: 12px;
+  width: 85%;
+  position: relative;
+}
+
+.skeleton-list-item::before {
+  content: "";
+  position: absolute;
+  left: -20px;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+}
+
+/* Skeleton sidebar for structure loading */
+.skeleton-sidebar {
+  width: 100%;
+}
+
+.skeleton-chapter-title {
+  height: 20px;
+  width: 80%;
+  margin-bottom: 15px;
+}
+
+.skeleton-lesson {
+  height: 14px;
+  width: 70%;
+  margin-left: 15px;
+  margin-bottom: 10px;
+}
+
+/* Animation for the skeleton loader */
+@keyframes pulse {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
