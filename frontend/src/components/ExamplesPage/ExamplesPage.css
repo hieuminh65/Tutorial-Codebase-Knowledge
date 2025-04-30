@@ -1,0 +1,141 @@
+/* Examples Page Styles */
+@import "../../styles/variables.css";
+
+.examples-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #1e1e2e; /* Dark background */
+  color: #cdd6f4; /* Light text for dark background */
+}
+
+.examples-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.examples-container h1 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #f5e0dc; /* Soft pink header */
+  text-align: center;
+}
+
+.examples-description {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 40px;
+  color: #bac2de; /* Lighter color for description */
+  line-height: 1.6;
+}
+
+.repository-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.repository-card {
+  background-color: #313244; /* Darker card background */
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  padding: 24px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #45475a; /* Subtle border */
+}
+
+.repository-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+  border-color: #89b4fa; /* Highlight border on hover */
+}
+
+.repository-card h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #89b4fa; /* Light blue for card titles */
+  font-size: 20px;
+}
+
+.repo-description {
+  color: #a6adc8; /* Slightly dimmed text */
+  margin-bottom: 20px;
+  flex-grow: 1;
+  line-height: 1.6;
+}
+
+.card-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.explore-link {
+  color: #f5c2e7; /* Pink for links */
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.explore-link:hover {
+  color: #f9e2af; /* Yellow on hover */
+}
+
+.loading-repositories {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+.loader {
+  border: 4px solid #313244;
+  border-top: 4px solid #89b4fa;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.error-message,
+.no-repositories {
+  text-align: center;
+  padding: 40px 0;
+  color: #f38ba8; /* Red for errors */
+  background-color: rgba(243, 139, 168, 0.1); /* Slight red tint */
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.no-repositories {
+  color: #a6adc8;
+  background-color: #313244;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .examples-container {
+    padding: 20px;
+  }
+
+  .repository-grid {
+    grid-template-columns: 1fr;
+  }
+}

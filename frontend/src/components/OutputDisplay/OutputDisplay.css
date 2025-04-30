@@ -6,6 +6,8 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color: #1e1e2e; /* Dark background */
+  color: #cdd6f4; /* Light text for dark background */
 }
 
 /* Adjusted container styling for proper positioning after header */
@@ -22,8 +24,8 @@
 
 .sidebar {
   width: 300px;
-  background-color: #f8f9fc;
-  border-right: 1px solid var(--border-color);
+  background-color: #181825; /* Dark sidebar background */
+  border-right: 1px solid #45475a; /* Darker border */
   overflow-y: auto;
   padding: 25px;
   flex-shrink: 0;
@@ -34,7 +36,7 @@
   font-size: 20px;
   margin-top: 0;
   margin-bottom: 20px;
-  color: var(--primary-color);
+  color: #89b4fa; /* Light blue for headers */
   font-weight: 600;
   text-align: left; /* Ensure heading is left-aligned */
 }
@@ -61,7 +63,7 @@
 .chapter-title {
   font-weight: 600;
   font-size: 16px;
-  color: var(--dark-text);
+  color: #f5e0dc; /* Soft pink for chapter titles */
   padding: 5px 0;
 }
 
@@ -69,21 +71,22 @@
   display: block;
   padding: 8px 10px;
   border-radius: 6px;
-  color: var(--medium-text);
+  color: #a6adc8; /* Slightly dimmed text for links */
   text-decoration: none;
   transition: all 0.2s;
   font-size: 14px;
 }
 
 .lesson-link:hover {
-  background-color: rgba(74, 107, 175, 0.05);
-  color: var(--primary-color);
+  background-color: rgba(137, 180, 250, 0.1); /* Subtle blue hover */
+  color: #89b4fa; /* Light blue on hover */
   text-decoration: none;
 }
 
 .lesson-link.active {
-  background-color: var(--primary-color);
-  color: white;
+  background-color: #313244; /* Darker active background */
+  color: #f5c2e7; /* Pink for active links */
+  border-left: 3px solid #f5c2e7; /* Pink left border for active links */
 }
 
 .content {
@@ -91,6 +94,7 @@
   padding: 30px 40px;
   overflow-y: auto;
   text-align: left; /* Ensure content is left-aligned */
+  background-color: #1e1e2e; /* Dark content background */
 }
 
 .markdown-content {
@@ -103,9 +107,9 @@
   font-size: 28px;
   margin-top: 0;
   font-weight: 700;
-  color: var(--dark-text);
+  color: #f5e0dc; /* Soft pink headers */
   padding-bottom: 16px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid #45475a; /* Darker border */
   text-align: left; /* Ensure heading is left-aligned */
 }
 
@@ -114,7 +118,7 @@
   margin-top: 32px;
   margin-bottom: 16px;
   font-weight: 600;
-  color: var(--dark-text);
+  color: #89b4fa; /* Light blue for h2 */
   text-align: left; /* Ensure heading is left-aligned */
 }
 
@@ -123,51 +127,53 @@
   margin-top: 28px;
   margin-bottom: 14px;
   font-weight: 600;
-  color: var(--dark-text);
+  color: #89dceb; /* Light cyan for h3 */
   text-align: left; /* Ensure heading is left-aligned */
 }
 
 .markdown-content p {
   margin-bottom: 16px;
   line-height: 1.7;
+  color: #cdd6f4; /* Light text color */
 }
 
 .markdown-content a {
-  color: var(--primary-color);
+  color: #89b4fa; /* Light blue for links */
   text-decoration: none;
-  border-bottom: 1px dotted var(--primary-light);
+  border-bottom: 1px dotted #45475a; /* Subtle border */
 }
 
 .markdown-content a:hover {
-  color: var(--primary-dark);
-  border-bottom: 1px solid var(--primary-dark);
+  color: #f5c2e7; /* Pink on hover */
+  border-bottom: 1px solid #f5c2e7;
 }
 
 .markdown-content blockquote {
-  border-left: 4px solid var(--primary-light);
+  border-left: 4px solid #89b4fa; /* Light blue border */
   padding-left: 16px;
   margin-left: 0;
-  color: var(--medium-text);
-  background-color: rgba(74, 107, 175, 0.05);
+  color: #bac2de; /* Lighter text for blockquotes */
+  background-color: rgba(137, 180, 250, 0.1); /* Very subtle blue background */
   padding: 16px 20px;
   border-radius: 0 8px 8px 0;
 }
 
 .markdown-content pre {
-  background-color: #282c34;
+  background-color: #11111b; /* Even darker background for code blocks */
   padding: 16px;
   border-radius: 8px;
   overflow-x: auto;
-  color: #e2e8f0;
+  color: #cdd6f4; /* Light text for code */
+  border: 1px solid #313244; /* Subtle border */
 }
 
 .markdown-content code {
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   font-size: 14px;
-  background-color: #f1f5f9;
+  background-color: #313244; /* Dark background for inline code */
   padding: 2px 5px;
   border-radius: 4px;
-  color: var(--secondary-color);
+  color: #f5c2e7; /* Pink for code text */
 }
 
 .markdown-content pre code {
@@ -180,6 +186,7 @@
 .markdown-content ol {
   padding-left: 24px;
   margin-bottom: 16px;
+  color: #cdd6f4; /* Light text color */
 }
 
 .markdown-content ul li,
@@ -190,7 +197,7 @@
 .markdown-content img {
   max-width: 100%;
   border-radius: 8px;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Darker shadow */
 }
 
 .markdown-content table {
@@ -200,21 +207,22 @@
 }
 
 .markdown-content table th {
-  background-color: #f1f5f9;
+  background-color: #313244; /* Dark table header */
   padding: 12px;
   text-align: left;
-  border-bottom: 2px solid var(--border-color);
+  border-bottom: 2px solid #45475a; /* Darker border */
+  color: #f5e0dc; /* Soft pink text */
 }
 
 .markdown-content table td {
   padding: 12px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid #45475a; /* Darker border */
 }
 
 .markdown-content hr {
   border: 0;
   height: 1px;
-  background-color: var(--border-color);
+  background-color: #45475a; /* Darker hr */
   margin: 32px 0;
 }
 
@@ -223,25 +231,25 @@
   align-items: center;
   justify-content: center;
   min-height: 200px;
-  color: var(--medium-text);
+  color: #a6adc8; /* Slightly dimmed text */
   font-style: italic;
 }
 
 .error {
-  color: var(--error-color);
-  background-color: rgba(229, 62, 62, 0.1);
-  border: 1px solid rgba(229, 62, 62, 0.2);
+  color: #f38ba8; /* Red for errors */
+  background-color: rgba(243, 139, 168, 0.1); /* Subtle red background */
+  border: 1px solid rgba(243, 139, 168, 0.2); /* Subtle red border */
   border-radius: 8px;
   padding: 15px 20px;
   margin: 15px 0;
   font-size: 14px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
   text-align: left; /* Ensure error messages are left-aligned */
 }
 
 .generating-message {
-  border: 1px solid #3498db;
-  background-color: rgba(52, 152, 219, 0.1);
+  border: 1px solid #89b4fa; /* Light blue border */
+  background-color: rgba(137, 180, 250, 0.1); /* Subtle blue background */
   padding: 15px;
   border-radius: 5px;
   margin-bottom: 20px;
@@ -249,10 +257,11 @@
 
 .generating-message p {
   margin: 5px 0;
+  color: #cdd6f4; /* Light text */
 }
 
 .generating-message .error {
-  color: #e74c3c;
+  color: #f38ba8; /* Red for errors */
   font-weight: bold;
   margin-bottom: 10px;
 }
@@ -260,7 +269,12 @@
 /* Skeleton loading animation */
 .skeleton-loader {
   animation: pulse 1.5s infinite ease-in-out;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(
+    90deg,
+    #313244 25%,
+    #45475a 50%,
+    #313244 75%
+  ); /* Darker gradient */
   background-size: 200% 100%;
   border-radius: 4px;
   margin-bottom: 10px;
@@ -296,6 +310,26 @@
   100% {
     background-position: -200% 0;
   }
+}
+
+/* Content transition styles to prevent harsh blinking */
+.content-transition {
+  position: relative;
+  min-height: 300px; /* Prevents layout shift during transitions */
+}
+
+.content-transition.fadeOut {
+  opacity: 0.4;
+  transition: opacity 150ms ease-out;
+}
+
+.content-transition.fadeIn {
+  opacity: 1;
+  transition: opacity 200ms ease-in;
+}
+
+.content-transition.idle {
+  opacity: 1;
 }
 
 /* Responsive adjustments */

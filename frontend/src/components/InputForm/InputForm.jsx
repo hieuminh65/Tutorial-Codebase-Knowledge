@@ -176,7 +176,7 @@ function InputForm() {
   const excludedPatterns = patternSuggestions.filter(p => patternStatus[p.pattern] === 'exclude');
 
   return (
-    <div className="container">
+    <div className="input-form-page">
       <AppHeader />
       <div className="form-container">
         <form onSubmit={(e) => {

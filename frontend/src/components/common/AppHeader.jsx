@@ -34,9 +34,8 @@ function AppHeader() {
   };
 
   const handleExamplesClick = () => {
-    // Navigate to examples section or page
-    // For now, we'll just navigate to home
-    navigate('/');
+    // Navigate to examples page
+    navigate('/examples');
   };
 
   return (

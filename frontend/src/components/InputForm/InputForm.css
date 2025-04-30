@@ -1,8 +1,20 @@
 /* InputForm Component Styles */
 @import "../../styles/variables.css";
 
+/* Add a container for the entire page with dark background */
+.input-form-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #1e1e2e; /* Dark background */
+  color: #cdd6f4; /* Light text */
+}
+
 .form-container {
   padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .form-group {
@@ -13,7 +25,7 @@
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
-  color: var(--dark-text);
+  color: #f5e0dc; /* Soft pink for labels */
 }
 
 .form-group input[type="text"],
@@ -22,20 +34,20 @@
 .form-group input[type="number"] {
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid var(--border-color);
+  border: 1px solid #45475a; /* Darker border */
   border-radius: 8px;
   box-sizing: border-box;
   font-size: 15px;
   transition: all 0.2s;
-  background-color: var(--input-bg);
-  color: var(--dark-text);
-  box-shadow: var(--shadow-sm);
+  background-color: #313244; /* Dark input background */
+  color: #cdd6f4; /* Light text color */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
 .form-group input:focus {
-  border-color: var(--primary-color);
+  border-color: #89b4fa; /* Light blue border */
   outline: none;
-  box-shadow: 0 0 0 3px rgba(74, 107, 175, 0.2);
+  box-shadow: 0 0 0 3px rgba(137, 180, 250, 0.3); /* Light blue glow */
 }
 
 /* URL input with improved styling */
@@ -49,35 +61,40 @@
 }
 
 .secondary-button {
-  background: var(--primary-light);
-  color: var(--primary-dark);
-  border: 1px solid rgba(74, 107, 175, 0.3);
+  background: rgba(137, 180, 250, 0.2); /* Subtle blue background */
+  color: #89b4fa; /* Light blue text */
+  border: 1px solid rgba(137, 180, 250, 0.3); /* Subtle border */
   border-radius: 8px;
   padding: 12px 20px;
   min-width: 120px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
   font-weight: 600;
   transition: all 0.2s;
   cursor: pointer;
 }
 
 .secondary-button:hover {
-  background-color: var(--primary-color);
-  color: white;
-  border-color: var(--primary-color);
+  background-color: rgba(
+    137,
+    180,
+    250,
+    0.3
+  ); /* Slightly more vibrant on hover */
+  color: #cdd6f4; /* Lighter text on hover */
+  border-color: #89b4fa; /* Stronger border on hover */
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Stronger shadow */
 }
 
 .secondary-button:active {
   transform: translateY(1px);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .secondary-button:disabled {
-  background-color: rgba(74, 107, 175, 0.1);
-  color: rgba(74, 107, 175, 0.5);
-  border-color: rgba(74, 107, 175, 0.2);
+  background-color: rgba(137, 180, 250, 0.1);
+  color: rgba(137, 180, 250, 0.5);
+  border-color: rgba(137, 180, 250, 0.2);
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -85,12 +102,12 @@
 
 /* Pattern selection styling with improved visuals */
 .patterns-container {
-  background-color: var(--light-bg);
+  background-color: #181825; /* Darker background */
   border-radius: 12px;
   padding: 25px;
   margin-bottom: 30px;
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
+  border: 1px solid #45475a; /* Darker border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Stronger shadow */
 }
 
 .patterns-header {
@@ -101,13 +118,13 @@
   margin-top: 0;
   margin-bottom: 10px;
   font-size: 20px;
-  color: var(--dark-text);
+  color: #f5c2e7; /* Pink header */
   font-weight: 600;
 }
 
 .patterns-header p {
   margin: 0;
-  color: var(--medium-text);
+  color: #a6adc8; /* Slightly dimmed text */
   font-size: 14px;
   line-height: 1.6;
 }
@@ -120,20 +137,20 @@
 
 .patterns-column {
   flex: 1;
-  background-color: var(--card-bg);
+  background-color: #1e1e2e; /* Dark column background */
   border-radius: 10px;
   padding: 20px;
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
+  border: 1px solid #45475a; /* Darker border */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
 .patterns-column h4 {
   margin-top: 0;
   margin-bottom: 16px;
   font-size: 16px;
-  color: var(--dark-text);
+  color: #89dceb; /* Light cyan for headers */
   padding-bottom: 12px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid #45475a; /* Darker border */
   font-weight: 600;
 }
 
@@ -148,17 +165,17 @@
 }
 
 .patterns-list::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(137, 180, 250, 0.05);
   border-radius: 3px;
 }
 
 .patterns-list::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(137, 180, 250, 0.2);
   border-radius: 3px;
 }
 
 .patterns-list::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(137, 180, 250, 0.3);
 }
 
 .pattern-item {
@@ -171,16 +188,16 @@
   padding: 12px 14px;
   border-radius: 8px;
   transition: all 0.2s;
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
+  background-color: #313244; /* Darker card background */
+  border: 1px solid #45475a; /* Darker border */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
 .pattern-item-movable:hover {
-  background-color: rgba(74, 107, 175, 0.05);
-  border-color: var(--primary-light);
+  background-color: rgba(137, 180, 250, 0.1); /* Subtle blue hover */
+  border-color: #89b4fa; /* Light blue border on hover */
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Stronger shadow */
 }
 
 .pattern-content {
@@ -190,33 +207,33 @@
 }
 
 .pattern-icon {
-  color: var(--light-text);
+  color: #bac2de; /* Lighter icon color */
   font-size: 16px;
   transition: all 0.2s;
 }
 
 .pattern-item-movable:hover .pattern-icon {
   transform: translateX(3px);
-  color: var(--primary-color);
+  color: #f5c2e7; /* Pink on hover */
 }
 
 .pattern-empty {
   padding: 20px;
   text-align: center;
-  color: var(--light-text);
+  color: #a6adc8; /* Slightly dimmed text */
   font-style: italic;
-  background-color: var(--light-bg);
+  background-color: #313244; /* Darker empty background */
   border-radius: 8px;
 }
 
 .pattern-label {
   flex: 1;
   font-size: 14px;
-  color: var(--dark-text);
+  color: #cdd6f4; /* Light text color */
 }
 
 .pattern-count {
-  color: var(--light-text);
+  color: #bac2de; /* Lighter count color */
   font-size: 12px;
   white-space: nowrap;
 }
@@ -226,19 +243,19 @@
   display: flex;
   align-items: stretch;
   max-width: 300px;
-  border: 1px solid var(--border-color);
+  border: 1px solid #45475a; /* Darker border */
   border-radius: 10px;
   overflow: hidden;
-  background-color: var(--card-bg);
+  background-color: #313244; /* Darker input background */
   height: 52px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
   margin-top: 8px;
   transition: all 0.2s;
 }
 
 .number-input-container:hover {
-  border-color: var(--primary-light);
-  box-shadow: 0 0 0 2px rgba(74, 107, 175, 0.1);
+  border-color: #89b4fa; /* Light blue border on hover */
+  box-shadow: 0 0 0 2px rgba(137, 180, 250, 0.2); /* Light blue glow */
 }
 
 .number-input {
@@ -250,9 +267,9 @@
   min-width: 80px;
   font-size: 16px;
   font-weight: 500;
-  color: var(--dark-text);
+  color: #cdd6f4; /* Light text color */
   -moz-appearance: textfield; /* Firefox */
-  background-color: white;
+  background-color: #313244; /* Darker input background */
 }
 
 /* Hide arrows in number input for Chrome, Safari, Edge, Opera */
@@ -266,8 +283,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--primary-color);
-  color: white;
+  background-color: #89b4fa; /* Light blue button */
+  color: #11111b; /* Dark text for contrast */
   border: none;
   width: 42px;
   height: 100%;
@@ -297,8 +314,8 @@
 }
 
 .number-input-button:hover {
-  background-color: var(--primary-dark);
-  color: white;
+  background-color: #f5c2e7; /* Pink on hover */
+  color: #11111b; /* Dark text for contrast */
   transform: none;
   box-shadow: none;
 }
@@ -308,8 +325,8 @@
 }
 
 .number-input-button:active {
-  background-color: var(--secondary-color);
-  color: white;
+  background-color: #f9e2af; /* Yellow when active */
+  color: #11111b; /* Dark text for contrast */
   box-shadow: none;
 }
 
@@ -329,8 +346,8 @@
   appearance: none;
   background: linear-gradient(
     to right,
-    var(--primary-light),
-    var(--secondary-color)
+    #89b4fa,
+    /* Light blue */ #f5c2e7 /* Pink */
   );
   border-radius: 10px;
   outline: none;
@@ -343,10 +360,10 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: white;
+  background: #1e1e2e; /* Dark thumb */
   cursor: pointer;
-  border: 2px solid var(--primary-color);
-  box-shadow: var(--shadow-md);
+  border: 2px solid #89b4fa; /* Light blue border */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Subtle shadow */
   transition: all 0.2s;
 }
 
@@ -354,18 +371,18 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: white;
+  background: #1e1e2e; /* Dark thumb */
   cursor: pointer;
-  border: 2px solid var(--primary-color);
-  box-shadow: var(--shadow-md);
+  border: 2px solid #89b4fa; /* Light blue border */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Subtle shadow */
   transition: all 0.2s;
 }
 
 .file-size-slider::-webkit-slider-thumb:hover,
 .file-size-slider::-moz-range-thumb:hover {
   transform: scale(1.2);
-  background-color: var(--primary-light);
-  border-color: var(--primary-dark);
+  background-color: #313244; /* Slightly lighter on hover */
+  border-color: #f5c2e7; /* Pink border on hover */
 }
 
 .slider-labels {
@@ -373,14 +390,14 @@
   justify-content: space-between;
   margin-top: 8px;
   font-size: 12px;
-  color: var(--medium-text);
+  color: #a6adc8; /* Slightly dimmed text */
   font-weight: 500;
 }
 
 .form-hint {
   display: block;
   margin-top: 8px;
-  color: var(--light-text);
+  color: #bac2de; /* Lighter hint text */
   font-size: 13px;
 }
 
@@ -395,14 +412,14 @@
 
 /* Success message with enhanced styling */
 .success-message {
-  background-color: rgba(56, 161, 105, 0.1);
-  color: var(--success-color);
+  background-color: rgba(166, 227, 161, 0.1); /* Subtle green background */
+  color: #a6e3a1; /* Green text */
   padding: 20px 25px;
   border-radius: 10px;
   margin-top: 25px;
-  border: 1px solid rgba(56, 161, 105, 0.2);
+  border: 1px solid rgba(166, 227, 161, 0.2); /* Subtle green border */
   text-align: center;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
 .tutorial-link-container {
@@ -411,27 +428,35 @@
 
 .tutorial-link {
   display: inline-block;
-  background: linear-gradient(135deg, var(--success-color), #2f855a);
-  color: white;
+  background: linear-gradient(
+    135deg,
+    #a6e3a1,
+    #74c7ec
+  ); /* Green to blue gradient */
+  color: #11111b; /* Dark text for contrast */
   padding: 12px 28px;
   border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
   transition: all 0.3s;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Stronger shadow */
 }
 
 .tutorial-link:hover {
-  background: linear-gradient(135deg, #38a169, #276749);
+  background: linear-gradient(
+    135deg,
+    #74c7ec,
+    #f5c2e7
+  ); /* Blue to pink gradient on hover */
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4); /* Even stronger shadow */
   text-decoration: none;
-  color: white;
+  color: #11111b; /* Dark text for contrast */
 }
 
 .tutorial-link:active {
   transform: translateY(1px);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
 /* Generate button styling with enhanced visual weight */
@@ -442,20 +467,41 @@
   font-size: 18px;
   background: linear-gradient(
     135deg,
-    var(--primary-color),
-    var(--secondary-color)
+    #89b4fa,
+    /* Light blue */ #f5c2e7 /* Pink */
   );
-  box-shadow: var(--shadow-md);
+  color: #11111b; /* Dark text for contrast */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.generate-button:hover {
+  background: linear-gradient(
+    135deg,
+    #f5c2e7,
+    /* Pink */ #89b4fa /* Light blue */
+  );
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4); /* Even stronger shadow */
+}
+
+.generate-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
 /* Error message styling with enhanced visibility */
 .error {
-  color: var(--error-color);
-  background-color: rgba(229, 62, 62, 0.1);
-  border: 1px solid rgba(229, 62, 62, 0.2);
+  color: #f38ba8; /* Red text */
+  background-color: rgba(243, 139, 168, 0.1); /* Subtle red background */
+  border: 1px solid rgba(243, 139, 168, 0.2); /* Subtle red border */
   border-radius: 8px;
   padding: 15px 20px;
   margin: 15px 0;
   font-size: 14px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }

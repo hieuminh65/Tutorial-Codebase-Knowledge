@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
@@ -17,6 +17,11 @@ function OutputDisplay() {
   const [isLoadingStructure, setIsLoadingStructure] = useState(true);
   const [isLoadingContent, setIsLoadingContent] = useState(false);
   const [error, setError] = useState(null);
+
+  // Track content transition state for smooth fading
+  const [contentTransitionState, setContentTransitionState] = useState('idle'); // 'idle', 'fadeOut', 'fadeIn'
+  const previousContentRef = useRef('');
+  const fadeTimeoutRef = useRef(null);
 
   useEffect(() => {
     const fetchStructure = async () => {
@@ -47,9 +52,13 @@ function OutputDisplay() {
 
   const fetchContent = async (filePath, updateURL = true) => {
     if (!filePath) return;
+
+    // Start fade out transition
+    setContentTransitionState('fadeOut');
+    // Store current content so we can keep displaying it during the transition
+    previousContentRef.current = selectedContent;
     setIsLoadingContent(true);
     setError(null);
-    setSelectedContent(''); // Clear previous content
     setSelectedPath(filePath); // Track selected path
 
     // Update the URL if updateURL is true
@@ -57,20 +66,26 @@ function OutputDisplay() {
       navigate(`/output/${repoName}/${encodeURIComponent(filePath)}`);
     }
 
-    try {
-      // Encode the file path part of the URL to handle special characters like spaces or #
-      const encodedFilePath = encodeURIComponent(filePath);
-      console.log(`Fetching content from: ${API_BASE_URL}/output-content/${repoName}/${filePath}`); // Debug log
-      // IMPORTANT: Axios might double-encode if we pass the full URL. Let axios handle encoding of path segments.
-      // We need to be careful here. Let's try fetching with the raw path first, assuming Flask/Werkzeug handles decoding.
-      const response = await axios.get(`${API_BASE_URL}/output-content/${repoName}/${filePath}`); // Pass raw path
-      setSelectedContent(response.data.content);
-    } catch (err) {
-      console.error("Failed to fetch content:", err);
-      setError(err.response?.data?.description || err.message || 'Failed to load lesson content.');
-    } finally {
-      setIsLoadingContent(false);
+    // Clear any existing fade timeout
+    if (fadeTimeoutRef.current) {
+      clearTimeout(fadeTimeoutRef.current);
     }
+
+    // Wait for fade out animation to complete
+    fadeTimeoutRef.current = setTimeout(async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/output-content/${repoName}/${filePath}`);
+        setSelectedContent(response.data.content);
+        // Begin fade in transition
+        setContentTransitionState('fadeIn');
+      } catch (err) {
+        console.error("Failed to fetch content:", err);
+        setError(err.response?.data?.description || err.message || 'Failed to load lesson content.');
+        setContentTransitionState('idle'); // Reset in case of error
+      } finally {
+        setIsLoadingContent(false);
+      }
+    }, 150); // Match this with the CSS transition time
   };
 
   return (
@@ -86,7 +101,7 @@ function OutputDisplay() {
               <p>The tutorial for this repository is being generated, which might take a few minutes to complete.</p>
               <p>Please check back soon or refresh the page to see the latest content.</p>
             </div>
-          )} {/* Show structure error with generation message */}
+          )}
           {!isLoadingStructure && structure && structure.chapters && (
             <ul>
               {structure.chapters.map((chapter, chapIndex) => (
@@ -100,7 +115,7 @@ function OutputDisplay() {
                             href="#"
                             className={`lesson-link ${lesson.path === selectedPath ? 'active' : ''}`}
                             onClick={(e) => { e.preventDefault(); fetchContent(lesson.path); }}
-                            style={{ fontWeight: lesson.path === selectedPath ? 'bold' : 'normal' }} // Highlight active
+                            style={{ fontWeight: lesson.path === selectedPath ? 'bold' : 'normal' }}
                           >
                             {lesson.title}
                           </a>
@@ -116,20 +131,38 @@ function OutputDisplay() {
             <p>No tutorial structure found.</p>
           )}
         </aside>
-        <main className="content">
-          {isLoadingContent && <SkeletonLoader />}
-          {/* Show content-specific error if content loading failed */}
-          {!isLoadingContent && error && selectedPath && <div className="error">Error loading {selectedPath}: {error}</div>}
-          {!isLoadingContent && selectedContent && (
-            <div className="markdown-content">
-              <ReactMarkdown>{selectedContent}</ReactMarkdown>
-            </div>
-          )}
-          {/* Initial state message */}
-          {!isLoadingStructure && !isLoadingContent && !selectedPath && !error && (
-            <p>Select a lesson from the sidebar to view its content.</p>
-          )}
-        </main>
+        {structure && <main className="content">
+          {/* Content container with transition classes */}
+          <div className={`content-transition ${contentTransitionState}`}>
+            {/* Show loading skeleton only on first load or when we have no content */}
+            {isLoadingContent && !previousContentRef.current && <SkeletonLoader />}
+
+            {/* Show previous content during fadeOut for a smooth transition */}
+            {contentTransitionState === 'fadeOut' && previousContentRef.current && (
+              <div className="markdown-content">
+                <ReactMarkdown>{previousContentRef.current}</ReactMarkdown>
+              </div>
+            )}
+
+            {/* Show new content during fadeIn or when idle */}
+            {(contentTransitionState === 'fadeIn' || contentTransitionState === 'idle') &&
+              !isLoadingContent && selectedContent && (
+                <div className="markdown-content">
+                  <ReactMarkdown>{selectedContent}</ReactMarkdown>
+                </div>
+              )}
+
+            {/* Error message */}
+            {!isLoadingContent && error && selectedPath && (
+              <div className="error">Error loading {selectedPath}: {error}</div>
+            )}
+
+            {/* Initial state message */}
+            {!isLoadingStructure && !isLoadingContent && !selectedPath && !error && (
+              <p>Select a lesson from the sidebar to view its content.</p>
+            )}
+          </div>
+        </main>}
       </div>
     </div>
   );
