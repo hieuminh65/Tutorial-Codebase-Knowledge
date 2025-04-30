@@ -149,8 +149,8 @@ function OutputDisplay() {
           {isLoadingStructure && <SidebarSkeletonLoader />}
           {!isLoadingStructure && error && !selectedContent && (
             <div className="generating-message">
-              <p className="error">{error}</p>
-              <p>The tutorial for this repository is being generated, which might take a few minutes to complete.</p>
+              {/* <p className="error">{error}</p> */}
+              <p>The tutorial for this repository might be generated, which might take a few minutes to complete.</p>
               <p>Please check back soon or refresh the page to see the latest content.</p>
             </div>
           )}
