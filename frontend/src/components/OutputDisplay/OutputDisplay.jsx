@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import { API_BASE_URL } from '../../utils/apiConfig';
@@ -7,7 +7,8 @@ import AppHeader from '../common/AppHeader';
 import './OutputDisplay.css';
 
 function OutputDisplay() {
-  const { repoName } = useParams();
+  const { repoName, lessonPath } = useParams();
+  const navigate = useNavigate();
   const [structure, setStructure] = useState(null);
   const [selectedContent, setSelectedContent] = useState('');
   const [selectedPath, setSelectedPath] = useState(null);
@@ -23,8 +24,13 @@ function OutputDisplay() {
         console.log(`Fetching structure from: ${API_BASE_URL}/output-structure/${repoName}`); // Debug log
         const response = await axios.get(`${API_BASE_URL}/output-structure/${repoName}`);
         setStructure(response.data);
+
+        // If lessonPath is provided in URL, load that content
+        if (lessonPath) {
+          fetchContent(decodeURIComponent(lessonPath), false);
+        }
         // Automatically load the first lesson of the first chapter if available
-        if (response.data?.chapters?.[0]?.lessons?.[0]?.path) {
+        else if (response.data?.chapters?.[0]?.lessons?.[0]?.path) {
           fetchContent(response.data.chapters[0].lessons[0].path);
         }
       } catch (err) {
@@ -35,14 +41,20 @@ function OutputDisplay() {
       }
     };
     fetchStructure();
-  }, [repoName]);
+  }, [repoName, lessonPath]);
 
-  const fetchContent = async (filePath) => {
+  const fetchContent = async (filePath, updateURL = true) => {
     if (!filePath) return;
     setIsLoadingContent(true);
     setError(null);
     setSelectedContent(''); // Clear previous content
     setSelectedPath(filePath); // Track selected path
+
+    // Update the URL if updateURL is true
+    if (updateURL) {
+      navigate(`/output/${repoName}/${encodeURIComponent(filePath)}`);
+    }
+
     try {
       // Encode the file path part of the URL to handle special characters like spaces or #
       const encodedFilePath = encodeURIComponent(filePath);

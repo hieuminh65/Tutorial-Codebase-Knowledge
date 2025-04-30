@@ -12,6 +12,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<InputForm />} />
                 <Route path="/output/:repoName" element={<OutputDisplay />} />
+                <Route path="/output/:repoName/:lessonPath/*" element={<OutputDisplay />} />
                 {/* Add other routes as needed */}
             </Routes>
         </Router>
